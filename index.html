@@ -3,10 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taulói nyilvántartó rendszer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Tanulói nyilvántartó rendszer</title>
 </head>
-<body>
+<body class="min-h-screen bg-gray-100 p-6 text-gray-800">
+
+    <h1 class="mb-8 text-center text-3xl font-bold text-blue-700">
+        Tanulói nyilvántartó rendszer
+    </h1>
     
+    <form class="mx-auto mb-8 flex max-w-4xl flex-wrap items-end gap-4 rounded-xl bg-white p-6 shadow-md">
+        <div class="flex flex-col gap-1">
+            <label for="nevInput" class="font-medium">Név</label>
+            <input 
+                type="text" 
+                name="nev" 
+                id="nevInput"
+                class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            >
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <label for="osztalyInput" class="font-medium">Osztály</label>
+            <input 
+                type="text" 
+                name="osztaly" 
+                id="osztalyInput"
+                class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            >
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <label for="atlagInput" class="font-medium">Átlag</label>
+            <input 
+                type="text" 
+                name="atlag" 
+                id="atlagInput"
+                class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            >
+        </div>
+
+        <button 
+            type="submit"
+            class="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700"
+        >
+            Mentés
+        </button>
+
+        <button 
+            type="button"
+            class="rounded-lg bg-gray-200 px-5 py-2 font-medium text-gray-700 transition hover:bg-gray-300"
+        >
+            Mégse
+        </button>
+    </form>
+
+    <div class="mx-auto mb-8 max-w-4xl overflow-hidden rounded-xl bg-white shadow-md">
+        <table class="w-full text-left">
+            <thead class="bg-blue-600 text-white">
+                <tr>
+                    <th class="px-4 py-3 font-semibold">Név</th>
+                    <th class="px-4 py-3 font-semibold">Osztály</th>
+                    <th class="px-4 py-3 font-semibold">Átlag</th>
+                    <th class="px-4 py-3 font-semibold">Műveletek</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody" class="divide-y divide-gray-200">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mx-auto mb-8 max-w-4xl rounded-xl bg-white p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-bold text-gray-700">Keresés</h2>
+
+        <input 
+            type="text" 
+            id="keresesInput"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+        >
+
+        <p id="keresesOutput" class="mt-3 text-gray-600"></p>
+    </div>
+
+    <div class="mx-auto mb-8 grid max-w-4xl gap-4 rounded-xl bg-white p-6 shadow-md">
+        <h2 class="text-xl font-bold text-gray-700">Statisztikák</h2>
+
+        <p id="tanulokSzama" class="rounded-lg bg-blue-50 p-3 text-blue-800">
+            Tanulok száma:
+        </p>
+
+        <p id="osztalyAtlag" class="rounded-lg bg-blue-50 p-3 text-blue-800">
+            Osztályátlag:
+        </p>
+
+        <p id="legjobbTanulo" class="rounded-lg bg-green-50 p-3 text-green-800">
+            Legjobb tanuló:
+        </p>
+    </div>
+
+    <div class="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-md">
+        <h2 class="mb-4 text-xl font-bold text-gray-700">Jegystatisztikák</h2>
+
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div class="rounded-lg bg-green-100 p-3 text-center font-medium text-green-800">
+                <p id="jeles">5</p>
+                <p>Jeles</p>
+            </div>
+
+            <div class="rounded-lg bg-blue-100 p-3 text-center font-medium text-blue-800">
+                <p id="jo">4</p>
+                <p>Jó</p>
+            </div>
+
+            <div class="rounded-lg bg-yellow-100 p-3 text-center font-medium text-yellow-800">
+                <p id="kozepes">3</p>
+                <p>Közepes</p>
+            </div>
+
+            <div class="rounded-lg bg-orange-100 p-3 text-center font-medium text-orange-800">
+                <p id="elegseges">2</p>
+                <p>Elégséges</p>
+            </div>
+
+            <div class="rounded-lg bg-red-100 p-3 text-center font-medium text-red-800">
+                <p id="elegtelen">1</p>
+                <p>Elégtelen</p>
+            </div>
+        </div>
+    </div>
+
     <script src="index.js"></script>
 </body>
 </html>
