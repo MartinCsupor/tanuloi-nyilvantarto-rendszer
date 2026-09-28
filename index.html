@@ -12,50 +12,62 @@
         Tanulói nyilvántartó rendszer
     </h1>
     
-    <form class="mx-auto mb-8 flex max-w-4xl flex-wrap items-end gap-4 rounded-xl bg-white p-6 shadow-md">
-        <div class="flex flex-col gap-1">
+    <form class="mx-auto mb-8 flex max-w-4xl flex-col gap-4 rounded-xl bg-white p-6 shadow-md">
+        <div class="flex flex-col gap-1 h-20">
             <label for="nevInput" class="font-medium">Név</label>
             <input 
                 type="text" 
                 name="nev" 
                 id="nevInput"
+                placeholder="Kiss István"
                 class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             >
         </div>
 
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1 h-20">
             <label for="osztalyInput" class="font-medium">Osztály</label>
             <input 
                 type="text" 
                 name="osztaly" 
                 id="osztalyInput"
+                placeholder="13.D"
                 class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             >
         </div>
 
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1 h-20">
             <label for="atlagInput" class="font-medium">Átlag</label>
             <input 
                 type="text" 
                 name="atlag" 
                 id="atlagInput"
+                placeholder="4.7"
                 class="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             >
         </div>
 
-        <button 
-            type="submit"
-            class="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700"
-        >
-            Mentés
-        </button>
+        <div>
+            <p id="formHiba" class="text-red-500 text-base text-center"></p>
+        </div>
+        
+        <div class="flex flex-row justify-center gap-5">
+            <button 
+                type="button"
+                class="rounded-lg bg-gray-200 px-5 py-2 font-medium text-gray-700 transition hover:bg-gray-300"
+                onclick="formtorles()"
+            >
+                Mégse
+            </button>
 
-        <button 
-            type="button"
-            class="rounded-lg bg-gray-200 px-5 py-2 font-medium text-gray-700 transition hover:bg-gray-300"
-        >
-            Mégse
-        </button>
+            <button 
+                type="submit"
+                class="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700"
+                onclick="modositas(event)"
+            >
+                Mentés
+            </button>
+        </div>
+
     </form>
 
     <div class="mx-auto mb-8 max-w-4xl overflow-hidden rounded-xl bg-white shadow-md">
