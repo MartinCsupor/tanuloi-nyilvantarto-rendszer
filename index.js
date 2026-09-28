@@ -27,10 +27,10 @@ let tanulo=[{
 
 const szovegRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ ]+$/;
 const osztalyRegex = /^\d+\.[A-Z]$/;
-const atlagRegex = /^[1-5](?:[,.]\d+)?$/;
+const atlagRegex = /^(?:[1-4](?:[,.]\d)?|5(?:[,.]0)?)$/;
 
 function formtorles() {
-    document.getElementById("formHiba").textContent = "";
+    document.getElementById("formInfo").textContent = "";
     document.getElementById("nevInput").value = "";
     document.getElementById("osztalyInput").value = "";
     document.getElementById("atlagInput").value = "";
@@ -39,7 +39,7 @@ function formtorles() {
 function modositas(e) {
     e.preventDefault();
 
-    let formHiba = document.getElementById("formHiba");
+    let formInfo = document.getElementById("formInfo");
     let nevInput = document.getElementById("nevInput").value;
     nevInput = nevInput.trim();
 
@@ -65,13 +65,19 @@ function modositas(e) {
             throw new Error("Az átlag 1 és 5 közötti szám kell legyen");
         }
 
-        formHiba.textContent = "";
+        formInfo.className = "text-green-500 text-center"
+        formInfo.textContent = "Sikeres felvétel";
 
+        setTimeout(() => {
+            formInfo.textContent = ""
+        }, 3000);
+        
         tanulo.push({nevInput, osztalyInput, atlagInput})
         console.log(tanulo)
-
+        
     } catch (err) {
-        formHiba.textContent = err.message;
+        formInfo.className = "text-red-500 text-center"
+        formInfo.textContent = err.message;
     }
 }
 
@@ -82,8 +88,27 @@ function torles(index){
     megjelenitTablazat();
 }
 
-function kereses(){
+function kereses() {
+    let keresesInput = document.getElementById("keresesInput");
+    let keresesOutput = document.getElementById("keresesOutput");
 
+    keresesInput.addEventListener("input", () => {
+        let keresett = keresesInput.value.toLowerCase();
+
+        let talaltak = tanulo.filter((diak) =>
+            diak.nev.toLowerCase().includes(keresett)
+        );
+
+        keresesOutput.textContent = "";
+
+        if (talaltak.length > 0) {
+            talaltak.forEach((diak) => {
+                keresesOutput.innerHTML+= `${diak.nev}</br>`;
+            });
+        } else {
+            keresesOutput.textContent = "Nincs ilyen tanuló.";
+        }
+    });
 }
 
 function statisztikak(){
@@ -126,3 +151,4 @@ function megjelenitTablazat() {
     });
 }
 megjelenitTablazat();
+kereses()
