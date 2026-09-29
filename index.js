@@ -72,20 +72,23 @@ function modositas(e) {
             formInfo.textContent = ""
         }, 3000);
         
-        tanulo.push({nevInput, osztalyInput, atlagInput})
+        tanulo.push({nev: nevInput, osztaly: osztalyInput, atlag: atlagInput});
         console.log(tanulo)
         
     } catch (err) {
         formInfo.className = "text-red-500 text-center"
         formInfo.textContent = err.message;
     }
+    megjelenitTablazat();
 }
+
+
 
 function torles(index){
  //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
  tanulo.splice(index, 1);
-    
     megjelenitTablazat();
+   
 }
 
 function kereses() {
@@ -111,13 +114,52 @@ function kereses() {
     });
 }
 
-function statisztikak(){
 
+function statisztikak() {
+    // 1. Összes tanuló száma
+    let tanulokSzamaElem = document.getElementById("tanulokSzama");
+    tanulokSzamaElem.textContent = `Tanulók száma: ${tanulo.length}`;
+
+    // Ha nincsenek tanulók, kezeljük le alapértelmezett értékekkel
+    if (tanulo.length === 0) {
+        document.getElementById("osztalyAtlag").textContent = "Osztályátlag: Nincs adat";
+        document.getElementById("legjobbTanulo").textContent = "Legjobb tanuló: Nincs adat";
+        return;
+    }
+
+    // 2. Osztályonkénti átlagok kiszámítása
+    let osztalyAdatok = {};
+    tanulo.forEach((diak) => {
+        if (!osztalyAdatok[diak.osztaly]) {
+            osztalyAdatok[diak.osztaly] = { osszeg: 0, darab: 0 };
+        }
+        osztalyAdatok[diak.osztaly].osszeg += parseFloat(diak.atlag);
+        osztalyAdatok[diak.osztaly].darab++;
+    });
+
+    let osztalyAtlagSzoveg = Object.entries(osztalyAdatok)
+        .map(([osztaly, adatok]) => {
+            let atlag = (adatok.osszeg / adatok.darab).toFixed(2);
+            return `${osztaly}: ${atlag}`;
+        })
+        .join(" | ");
+
+    document.getElementById("osztalyAtlag").textContent = `Osztályátlagok: ${osztalyAtlagSzoveg}`;
+
+    // 3. Legjobb tanuló az egész iskolából
+    let legjobb = tanulo.reduce((maxDiak, JelenlegiDiak) => {
+        return parseFloat(JelenlegiDiak.atlag) > parseFloat(maxDiak.atlag) ? JelenlegiDiak : maxDiak;
+    }, tanulo[0]);
+
+    document.getElementById("legjobbTanulo").textContent = `Legjobb tanuló: ${legjobb.nev} (${legjobb.osztaly} - ${legjobb.atlag})`;
+    
 }
+
 
 function JegyStatisztika(){
 
 }
+
 function megjelenitTablazat() {
     const tableBody = document.getElementById("tableBody");
     tableBody.replaceChildren();
@@ -142,13 +184,17 @@ function megjelenitTablazat() {
         
         
         deleteButton.addEventListener("click", () => {
-            torles(index,1);
+            torles(index);
         });
 
         actionCell.appendChild(deleteButton);
         row.appendChild(actionCell);
         tableBody.appendChild(row);
+       
     });
+    statisztikak();
 }
+
 megjelenitTablazat();
 kereses()
+statisztikak()
