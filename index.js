@@ -201,11 +201,14 @@ function JegyStatisztika(){
     elegtelen.textContent = elegtelenek
 }
 
-function megjelenitTablazat() {
+function megjelenitTablazat(adatLista = tanulo) {
     const tableBody = document.getElementById("tableBody");
     tableBody.replaceChildren();
 
-    tanulo.forEach((diak, index) => {
+    adatLista.forEach((diak) => {
+        
+        const eredetiIndex = tanulo.indexOf(diak);
+
         const row = document.createElement("tr");
 
         [diak.nev, diak.osztaly, diak.atlag].forEach((ertek) => {
@@ -227,27 +230,26 @@ function megjelenitTablazat() {
             document.getElementById("nevInput").value = diak.nev;
             document.getElementById("osztalyInput").value = diak.osztaly;
             document.getElementById("atlagInput").value = diak.atlag;
-            modositandoIndex = index
-        })
+            modositandoIndex = eredetiIndex; 
+        });
 
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
         deleteButton.className = "rounded-lg bg-red-600 px-3 py-1 font-medium text-white transition hover:bg-red-700";
         deleteButton.textContent = "Törlés";
         
-        
         deleteButton.addEventListener("click", () => {
-            torles(index);
+            torles(eredetiIndex); 
         });
 
         actionCell.appendChild(modositButton);
         actionCell.appendChild(deleteButton);
         row.appendChild(actionCell);
         tableBody.appendChild(row);
-       
     });
+
     statisztikak();
-    JegyStatisztika();
+     JegyStatisztika();
 }
 
 function atlagCsokkeno() {
@@ -260,29 +262,35 @@ function rendezesABC() {
     megjelenitTablazat(); 
 }
 
+
 function csakKituno() {
     
-    tanulo = tanulo.filter(tan => parseFloat(tan.atlag) >= 4.5);
-    megjelenitTablazat();
+    const kitunoTanulok = tanulo.filter(tan => parseFloat(tan.atlag) >= 4.5);
+    
+     megjelenitTablazat(kitunoTanulok);
 }
 
 function kiemeles() {
     const tableRows = document.querySelectorAll("#tableBody tr");
     
     tableRows.forEach((row, index) => {
-        
         let atlag = parseFloat(tanulo[index].atlag);
+        
+        
+        row.classList.remove("bg-green-100", "bg-red-100");
         
         
         if (atlag >= 4.5) {
             row.classList.add("bg-green-100");
-        } else {
-            row.classList.remove("bg-green-100"); 
+        } 
+       
+        else if (atlag < 2.0) {
+            row.classList.add("bg-red-100");
         }
     });
 }
 
-// Oldal betöltésekor lefutó alapbeállítások:
+
 document.addEventListener("DOMContentLoaded", () => {
     megjelenitTablazat();
     kereses();
