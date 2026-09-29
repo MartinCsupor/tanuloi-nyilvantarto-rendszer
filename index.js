@@ -24,6 +24,7 @@ let tanulo=[{
     osztaly:"9.D",
     atlag:1.2
 }]
+let modositandoIndex = null;
 
 const szovegRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ ]+$/;
 const osztalyRegex = /^(?:[1-9]|1[0-4])\.[A-Z]$/;
@@ -72,8 +73,12 @@ function modositas(e) {
             formInfo.textContent = ""
         }, 3000);
         
-        tanulo.push({nevInput, osztalyInput, atlagInput})
-        console.log(tanulo)
+        if (modositandoIndex != null){
+            tanulo[modositandoIndex] = {nev: nevInput, osztaly: osztalyInput,atlag: atlagInput}
+            modositandoIndex = null
+        } else {
+            tanulo.push({nev: nevInput, osztaly: osztalyInput,atlag: atlagInput})
+        }
         
     } catch (err) {
         formInfo.className = "text-red-500 text-center"
@@ -82,8 +87,6 @@ function modositas(e) {
     JegyStatisztika()
     megjelenitTablazat()
 }
-
-
 
 function torles(index){
  //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
@@ -215,6 +218,18 @@ function megjelenitTablazat() {
         const actionCell = document.createElement("td");
         actionCell.className = "px-4 py-3";
 
+        const modositButton = document.createElement("button");
+        modositButton.type = "button";
+        modositButton.className = "rounded-lg bg-blue-600 px-3 py-1 font-medium text-white transition hover:bg-blue-700 mr-3 mb-1";
+        modositButton.textContent = "Módosítás";
+
+        modositButton.addEventListener("click", () => {
+            document.getElementById("nevInput").value = diak.nev;
+            document.getElementById("osztalyInput").value = diak.osztaly;
+            document.getElementById("atlagInput").value = diak.atlag;
+            modositandoIndex = index
+        })
+
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
         deleteButton.className = "rounded-lg bg-red-600 px-3 py-1 font-medium text-white transition hover:bg-red-700";
@@ -225,6 +240,7 @@ function megjelenitTablazat() {
             torles(index);
         });
 
+        actionCell.appendChild(modositButton);
         actionCell.appendChild(deleteButton);
         row.appendChild(actionCell);
         tableBody.appendChild(row);
