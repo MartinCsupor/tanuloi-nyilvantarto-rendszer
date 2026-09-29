@@ -80,17 +80,17 @@ function modositas(e) {
         formInfo.textContent = err.message;
     }
     JegyStatisztika()
-    megjelenitTablazat();
+    megjelenitTablazat()
 }
 
 
 
 function torles(index){
-    //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
-    tanulo.splice(index, 1);
-    JegyStatisztika()
+ //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
+ tanulo.splice(index, 1);
+    
     megjelenitTablazat();
-   
+    JegyStatisztika();
 }
 
 function kereses() {
@@ -165,7 +165,37 @@ function statisztikak() {
 
 
 function JegyStatisztika(){
+    const jeles = document.getElementById("jeles")
+    const jo = document.getElementById("jo")
+    const kozepes = document.getElementById("kozepes")
+    const elegseges = document.getElementById("elegseges")
+    const elegtelen = document.getElementById("elegtelen")
 
+    let jelesek = 0 ;
+    let jok = 0;
+    let kozepesek = 0;
+    let elegsegesek =0;
+    let elegtelenek = 0;
+
+    tanulo.forEach(tan => {
+         if (tan.atlag >= 4.5) {
+            jelesek++;
+        } else if (tan.atlag >= 3.5) {
+            jok++;
+        } else if (tan.atlag >= 2.5) {
+            kozepesek++;
+        } else if (tan.atlag >= 2) {
+            elegsegesek++;
+        } else {
+            elegtelenek++;
+        }
+    })
+
+    jeles.textContent = jelesek
+    jo.textContent = jok
+    kozepes.textContent = kozepesek
+    elegseges.textContent = elegsegesek
+    elegtelen.textContent = elegtelenek
 }
 
 function megjelenitTablazat() {
@@ -201,9 +231,10 @@ function megjelenitTablazat() {
        
     });
     statisztikak();
+    JegyStatisztika();
 }
 
 megjelenitTablazat();
-kereses()
-statisztikak()
-JegyStatisztika()
+kereses();
+JegyStatisztika();
+statisztikak();
