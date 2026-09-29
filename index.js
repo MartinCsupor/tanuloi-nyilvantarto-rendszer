@@ -250,7 +250,42 @@ function megjelenitTablazat() {
     JegyStatisztika();
 }
 
-megjelenitTablazat();
-kereses();
-JegyStatisztika();
-statisztikak();
+function atlagCsokkeno() {
+    tanulo.sort((a, b) => parseFloat(b.atlag) - parseFloat(a.atlag));
+    megjelenitTablazat(); 
+}
+
+function rendezesABC() {
+    tanulo.sort((a, b) => a.nev.localeCompare(b.nev));
+    megjelenitTablazat(); 
+}
+
+function csakKituno() {
+    
+    tanulo = tanulo.filter(tan => parseFloat(tan.atlag) >= 4.5);
+    megjelenitTablazat();
+}
+
+function kiemeles() {
+    const tableRows = document.querySelectorAll("#tableBody tr");
+    
+    tableRows.forEach((row, index) => {
+        
+        let atlag = parseFloat(tanulo[index].atlag);
+        
+        
+        if (atlag >= 4.5) {
+            row.classList.add("bg-green-100");
+        } else {
+            row.classList.remove("bg-green-100"); 
+        }
+    });
+}
+
+// Oldal betöltésekor lefutó alapbeállítások:
+document.addEventListener("DOMContentLoaded", () => {
+    megjelenitTablazat();
+    kereses();
+    JegyStatisztika(); 
+    statisztikak();
+});;
