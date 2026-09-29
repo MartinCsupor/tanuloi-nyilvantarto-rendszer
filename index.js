@@ -26,7 +26,7 @@ let tanulo=[{
 }]
 
 const szovegRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ ]+$/;
-const osztalyRegex = /^\d+\.[A-Z]$/;
+const osztalyRegex = /^(?:[1-9]|1[0-4])\.[A-Z]$/;
 const atlagRegex = /^(?:[1-4](?:[,.]\d)?|5(?:[,.]0)?)$/;
 
 function formtorles() {
@@ -72,19 +72,21 @@ function modositas(e) {
             formInfo.textContent = ""
         }, 3000);
         
-        tanulo.push({nevInput, osztalyInput, atlagInput})
+        tanulo.push({nev: nevInput, osztaly: osztalyInput, atlag: atlagInput})
         console.log(tanulo)
         
     } catch (err) {
         formInfo.className = "text-red-500 text-center"
         formInfo.textContent = err.message;
     }
+    JegyStatisztika()
 }
 
 function torles(index){
- //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
- tanulo.splice(index, 1);
+    //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
+    tanulo.splice(index, 1);
     
+    JegyStatisztika()
     megjelenitTablazat();
 }
 
@@ -93,14 +95,20 @@ function kereses() {
     let keresesOutput = document.getElementById("keresesOutput");
 
     keresesInput.addEventListener("input", () => {
-        let keresett = keresesInput.value.toLowerCase();
-
+        let keresett = keresesInput.value;
+        keresett = keresett.toLowerCase();
+        
         let talaltak = tanulo.filter((diak) =>
             diak.nev.toLowerCase().includes(keresett)
         );
 
         keresesOutput.textContent = "";
 
+        if (keresett === "") {
+            keresesOutput.textContent = "";
+            return;
+        }
+        
         if (talaltak.length > 0) {
             talaltak.forEach((diak) => {
                 keresesOutput.innerHTML+= `${diak.nev}</br>`;
@@ -116,7 +124,37 @@ function statisztikak(){
 }
 
 function JegyStatisztika(){
+    const jeles = document.getElementById("jeles")
+    const jo = document.getElementById("jo")
+    const kozepes = document.getElementById("kozepes")
+    const elegseges = document.getElementById("elegseges")
+    const elegtelen = document.getElementById("elegtelen")
 
+    let jelesek = 0 ;
+    let jok = 0;
+    let kozepesek = 0;
+    let elegsegesek =0;
+    let elegtelenek = 0;
+
+    tanulo.forEach(tan => {
+         if (tan.atlag >= 4.5) {
+            jelesek++;
+        } else if (tan.atlag >= 3.5) {
+            jok++;
+        } else if (tan.atlag >= 2.5) {
+            kozepesek++;
+        } else if (tan.atlag >= 2) {
+            elegsegesek++;
+        } else {
+            elegtelenek++;
+        }
+    })
+
+    jeles.textContent = jelesek
+    jo.textContent = jok
+    kozepes.textContent = kozepesek
+    elegseges.textContent = elegsegesek
+    elegtelen.textContent = elegtelenek
 }
 function megjelenitTablazat() {
     const tableBody = document.getElementById("tableBody");
@@ -150,5 +188,7 @@ function megjelenitTablazat() {
         tableBody.appendChild(row);
     });
 }
+
 megjelenitTablazat();
 kereses()
+JegyStatisztika()
