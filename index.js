@@ -31,8 +31,8 @@ let tanulo=[{
 let modositandoIndex = null;
 
 const szovegRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ ]+$/;
-const osztalyRegex = /^(?:[1-9]|1[0-4])\.[A-Z]$/;
-const atlagRegex = /^(?:[1-4](?:[,.]\d)?|5(?:[,.]0)?)$/;
+const osztalyRegex = /^(?:[1-9]|1[0-4])\.[a-zA-Z]$/;
+const atlagRegex = /^(?:[1-4](?:[,.]\d{1,2})?|5(?:[,.]00)?)$/;
 
 function formtorles() {
     document.getElementById("formInfo").textContent = "";
@@ -41,7 +41,6 @@ function formtorles() {
     document.getElementById("atlagInput").value = "";
     modositandoIndex = null
     document.getElementById("formSubmitButton").textContent = "Mentés";
-
 }
 
 function modositas(e) {
@@ -76,6 +75,8 @@ function modositas(e) {
         formInfo.className = "text-green-500 text-center"
 
         if (modositandoIndex != null){
+            atlagInput.replace(",", ".")
+            osztalyInput = osztalyInput.split('.')[1].toUpperCase()
             tanulo[modositandoIndex] = {nev: nevInput, osztaly: osztalyInput,atlag: atlagInput}
             document.getElementById("formSubmitButton").textContent = "Mentés";
             formInfo.textContent = "Sikeres módosítás";
@@ -84,6 +85,8 @@ function modositas(e) {
             document.getElementById("osztalyInput").value = ""
             document.getElementById("atlagInput").value = ""
         } else {
+            atlagInput = atlagInput.replace(",", ".")
+            osztalyInput = osztalyInput.split('.')[0] + "." + osztalyInput.split('.')[1].toUpperCase()
             tanulo.push({nev: nevInput, osztaly: osztalyInput,atlag: atlagInput})
             formInfo.textContent = "Sikeres felvétel";
             document.getElementById("nevInput").value = ""
