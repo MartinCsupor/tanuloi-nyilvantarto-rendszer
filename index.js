@@ -23,6 +23,10 @@ let tanulo=[{
     nev:"Rostás Albert",
     osztaly:"9.D",
     atlag:1.2
+},{
+    nev:"Király Károly",
+    osztaly:"13.D",
+    atlag:5.0
 }]
 let modositandoIndex = null;
 
@@ -89,7 +93,7 @@ function modositas(e) {
 }
 
 function torles(index){
- //A táblázat minden sorában legyen egy:Törlés gomb. A kiválasztott tanulót távolítsa el a tömbből és a táblázatból.
+ 
  tanulo.splice(index, 1);
     
     megjelenitTablazat();
@@ -127,18 +131,18 @@ function kereses() {
 
 
 function statisztikak() {
-    // 1. Összes tanuló száma
+
     let tanulokSzamaElem = document.getElementById("tanulokSzama");
     tanulokSzamaElem.textContent = `Tanulók száma: ${tanulo.length}`;
 
-    // Ha nincsenek tanulók, kezeljük le alapértelmezett értékekkel
+    
     if (tanulo.length === 0) {
         document.getElementById("osztalyAtlag").textContent = "Osztályátlag: Nincs adat";
         document.getElementById("legjobbTanulo").textContent = "Legjobb tanuló: Nincs adat";
         return;
     }
 
-    // 2. Osztályonkénti átlagok kiszámítása
+   
     let osztalyAdatok = {};
     tanulo.forEach((diak) => {
         if (!osztalyAdatok[diak.osztaly]) {
@@ -157,7 +161,6 @@ function statisztikak() {
 
     document.getElementById("osztalyAtlag").textContent = `Osztályátlagok: ${osztalyAtlagSzoveg}`;
 
-    // 3. Legjobb tanuló az egész iskolából
     let legjobb = tanulo.reduce((maxDiak, JelenlegiDiak) => {
         return parseFloat(JelenlegiDiak.atlag) > parseFloat(maxDiak.atlag) ? JelenlegiDiak : maxDiak;
     }, tanulo[0]);
@@ -265,7 +268,7 @@ function rendezesABC() {
 
 function csakKituno() {
     
-    const kitunoTanulok = tanulo.filter(tan => parseFloat(tan.atlag) >= 4.5);
+    const kitunoTanulok = tanulo.filter(tan => parseFloat(tan.atlag) === 5.0);
     
      megjelenitTablazat(kitunoTanulok);
 }
