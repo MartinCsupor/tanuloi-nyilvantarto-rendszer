@@ -166,12 +166,13 @@ function statisztikak() {
         osztalyAdatok[diak.osztaly].darab++;
     });
 
-    let osztalyAtlagSzoveg = Object.entries(osztalyAdatok)
-        .map(([osztaly, adatok]) => {
-            let atlag = (adatok.osszeg / adatok.darab).toFixed(2);
-            return `${osztaly}: ${atlag}`;
-        })
-        .join(" | ");
+   let osztalyAtlagSzoveg = Object.entries(osztalyAdatok)
+    .sort(([a], [b]) => a.localeCompare(b, 'hu', { numeric: true }))
+    .map(([osztaly, adatok]) => {
+        let atlag = (adatok.osszeg / adatok.darab).toFixed(2);
+        return `${osztaly}: ${atlag}`;
+    })
+    .join(" | ");
 
     document.getElementById("osztalyAtlag").textContent = `Osztályátlagok: ${osztalyAtlagSzoveg}`;
 
