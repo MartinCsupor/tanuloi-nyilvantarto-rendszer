@@ -40,6 +40,8 @@ function formtorles() {
     document.getElementById("osztalyInput").value = "";
     document.getElementById("atlagInput").value = "";
     modositandoIndex = null
+    document.getElementById("formSubmitButton").textContent = "Mentés";
+
 }
 
 function modositas(e) {
