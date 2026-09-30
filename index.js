@@ -252,7 +252,7 @@ function megjelenitTablazat(adatLista = tanulo) {
     });
 
     statisztikak();
-     JegyStatisztika();
+    JegyStatisztika();
 }
 
 function atlagCsokkeno() {
@@ -275,13 +275,15 @@ function csakKituno() {
 
 function kiemeles() {
     const tableRows = document.querySelectorAll("#tableBody tr");
-    
-    tableRows.forEach((row, index) => {
+    console.log(tableRows)
+
+    tableRows.forEach((row) => {
+
+        let index = tanulo.findIndex((diak) => diak.nev === row.cells[0].textContent);
+
         let atlag = parseFloat(tanulo[index].atlag);
         
-        
         row.classList.remove("bg-green-100", "bg-red-100");
-        
         
         if (atlag >= 4.5) {
             row.classList.add("bg-green-100");
