@@ -39,6 +39,7 @@ function formtorles() {
     document.getElementById("nevInput").value = "";
     document.getElementById("osztalyInput").value = "";
     document.getElementById("atlagInput").value = "";
+    modositandoIndex = null
 }
 
 function modositas(e) {
@@ -69,21 +70,29 @@ function modositas(e) {
         } else if (!atlagRegex.test(atlagInput)) {
             throw new Error("Az átlag 1 és 5 közötti szám kell legyen");
         }
-
+        
         formInfo.className = "text-green-500 text-center"
-        formInfo.textContent = "Sikeres felvétel";
+
+        if (modositandoIndex != null){
+            tanulo[modositandoIndex] = {nev: nevInput, osztaly: osztalyInput,atlag: atlagInput}
+            document.getElementById("formSubmitButton").textContent = "Mentés";
+            formInfo.textContent = "Sikeres módosítás";
+            modositandoIndex = null
+            document.getElementById("nevInput").value = ""
+            document.getElementById("osztalyInput").value = ""
+            document.getElementById("atlagInput").value = ""
+        } else {
+            tanulo.push({nev: nevInput, osztaly: osztalyInput,atlag: atlagInput})
+            formInfo.textContent = "Sikeres felvétel";
+            document.getElementById("nevInput").value = ""
+            document.getElementById("osztalyInput").value = ""
+            document.getElementById("atlagInput").value = ""
+        }
 
         setTimeout(() => {
             formInfo.textContent = ""
         }, 3000);
-        
-        if (modositandoIndex != null){
-            tanulo[modositandoIndex] = {nev: nevInput, osztaly: osztalyInput,atlag: atlagInput}
-            modositandoIndex = null
-        } else {
-            tanulo.push({nev: nevInput, osztaly: osztalyInput,atlag: atlagInput})
-        }
-        
+
     } catch (err) {
         formInfo.className = "text-red-500 text-center"
         formInfo.textContent = err.message;
@@ -228,11 +237,12 @@ function megjelenitTablazat(adatLista = tanulo) {
         modositButton.type = "button";
         modositButton.className = "rounded-lg bg-blue-600 px-3 py-1 font-medium text-white transition hover:bg-blue-700 mr-3 mb-1";
         modositButton.textContent = "Módosítás";
-
+        
         modositButton.addEventListener("click", () => {
             document.getElementById("nevInput").value = diak.nev;
             document.getElementById("osztalyInput").value = diak.osztaly;
             document.getElementById("atlagInput").value = diak.atlag;
+            document.getElementById("formSubmitButton").textContent = "Módosítás";
             modositandoIndex = eredetiIndex; 
         });
 
@@ -275,7 +285,6 @@ function csakKituno() {
 
 function kiemeles() {
     const tableRows = document.querySelectorAll("#tableBody tr");
-    console.log(tableRows)
 
     tableRows.forEach((row) => {
 
